@@ -1,15 +1,27 @@
-import { ExampleComponent } from './components/example/example.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MainViewComponent } from './components/main-view/main-view.component';
+import { OperativeAgmarComponent } from './components/operative-agmar/operative-agmar.component';
 
 const routes: Routes = [
   {
-    path: 'example',
-    component: ExampleComponent,
+    path: 'plan',
+    component: MainViewComponent,
+    children: [
+      {
+        path: 'operative-agmar',
+        component: OperativeAgmarComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'operative-agmar',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '',
-    redirectTo: 'example',
+    redirectTo: 'plan',
     pathMatch: 'full',
   },
 ];

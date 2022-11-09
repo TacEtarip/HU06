@@ -1,0 +1,7 @@
+<ng-container [ngSwitch]="registerStatus">
+  <ng-container *ngFor="let state of states">
+    <p *ngSwitchCase="state.value" [ngStyle]="{ color: state.color }">
+      {{ state.name }}
+    </p>
+  </ng-container>
+</ng-container>

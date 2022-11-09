@@ -5,6 +5,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteFilterComponent } from './auto-complete-filter/auto-complete-filter.component';
 import { AutoCompleteComponent } from './auto-complete/auto-complete.component';
@@ -20,8 +21,10 @@ import { InputFilterComponent } from './input-filter/input-filter.component';
 import { LoadMoreComponent } from './load-more/load-more.component';
 import { LoadingFilterComponent } from './loading-filter/loading-filter.component';
 import { LoadingTableComponent } from './loading-table/loading-table.component';
+import { MetricComponent } from './metric/metric.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ReplacePipe } from './pipes/replace.pipe';
+import { RegisterStatusComponent } from './register-status/register-status.component';
 import { TableBodyComponent } from './table/table-body/table-body.component';
 import { TableHeaderComponent } from './table/table-header/table-header.component';
 import { TextInputComponent } from './text-input/text-input.component';
@@ -47,11 +50,14 @@ const COMPONENTS = [
   InputContainerComponent,
   TppInputDirective,
   TppBtnDirective,
+  MetricComponent,
+  RegisterStatusComponent,
 ];
 
 const PRIME_MODULES = [
   TooltipModule,
   FormsModule,
+  OverlayPanelModule,
   ButtonModule,
   AutoCompleteModule,
   CalendarModule,
@@ -61,7 +67,7 @@ const PRIME_MODULES = [
 const MODULES = [CommonModule, IconsModule, ReactiveFormsModule];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, MetricComponent],
   imports: [...MODULES, ...PRIME_MODULES],
   exports: [...COMPONENTS, ...MODULES, ...PRIME_MODULES],
   providers: [],

@@ -1,0 +1,259 @@
+<main class="plan">
+  <section class="plan-header">
+    <h1>Listado De Planificación Operativa</h1>
+  </section>
+  <section class="plan-metrics">
+    <app-metric [metric]="generatedWorkOrders"></app-metric>
+    <app-metric [metric]="assignedWorkOrders"></app-metric>
+    <app-metric [metric]="pendingWorkOrders"></app-metric>
+    <div class="date-range">
+      <h5>
+        Rango de fecha:
+        <span
+          >Del {{ metricDateRange.fromDate | date: "d 'de' MMMM" }} al
+          {{ metricDateRange.toDate | date: "d 'de' MMMM" }}</span
+        >
+      </h5>
+    </div>
+  </section>
+  <section class="plan-action">
+    <button
+      (click)="save()"
+      id="btn-guardar-otp"
+      class="btn btn-secondary p-button w-14rem"
+      pButton
+      label="Guardar"
+    ></button>
+    <button
+      id="btn-excel-otp"
+      icon="pi pi-download"
+      class="btn btn-secondary p-button mr-3 w-14rem"
+      pButton
+      label="Descargar en Excel"
+    ></button>
+    <span class="separator"></span>
+    <div class="assignment-filter">
+      <h6>Todas</h6>
+      <p-inputSwitch></p-inputSwitch>
+      <h6>Por Asignar</h6>
+    </div>
+    <button
+      id="btn-filtrar-otp"
+      class="btn btn-primary p-button w-14rem"
+      pButton
+      (click)="filtersPanel.toggle($event)"
+      label="Filtrar"
+    >
+      <ico-option class="ico-white h-auto w-auto mr-2"></ico-option>
+    </button>
+  </section>
+  <section class="plan-table">
+    <div [ngStyle]="{ 'max-height': '480px' }" class="overflow-auto">
+      <div [ngStyle]="{ 'min-width': '1200px' }">
+        <app-table-header [header]="otHeaders">
+          <ng-template let-row key="spe" appTable>
+            <div class="flex">
+              <input
+                (click)="stopPropagation($event)"
+                (change)="changeStateOfSelectedAll($event)"
+                class="form-check-input"
+                type="checkbox"
+              />
+            </div>
+          </ng-template>
+          <ng-template let-row key="numberOt" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="description" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="locality" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="eta" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="scheduledDate" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="groupId" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="userId" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="statusId" appTable>
+            {{ row.name }}
+          </ng-template>
+          <ng-template let-row key="accion" appTable>
+            {{ row.name }}
+          </ng-template>
+        </app-table-header>
+        <app-table-body
+          [loading]="loadingTableData"
+          [list]="plannedOtList"
+          [header]="otHeaders"
+        >
+          <ng-template let-spe key="spe" appTable>
+            <div class="table-check">
+              <input
+                [checked]="spe"
+                (click)="stopPropagation($event)"
+                class="form-check-input"
+                [ngStyle]="{ 'justify-self': 'center' }"
+                type="checkbox"
+              />
+            </div>
+          </ng-template>
+
+          <ng-template let-element key="numberOt" appTable>{{
+            element
+          }}</ng-template>
+
+          <ng-template let-element key="description" appTable>{{
+            element
+          }}</ng-template>
+
+          <ng-template let-element key="locality" appTable>{{
+            element
+          }}</ng-template>
+
+          <ng-template let-row="row" key="eta" appTable
+            >{{ row.landfall }} {{ row.eta | date: 'short' }}
+          </ng-template>
+
+          <ng-template let-element key="scheduledDate" appTable>{{
+            element | date: 'shortDate'
+          }}</ng-template>
+
+          <ng-template let-element key="groupId" appTable>
+            <select disabled [value]="1" name="example" tppInput type="text">
+              <option value="1">MDP</option>
+            </select></ng-template
+          >
+
+          <ng-template let-element key="userId" appTable>
+            <select disabled [value]="1" name="example" tppInput type="text">
+              <option value="1">Luis</option>
+            </select>
+          </ng-template>
+
+          <ng-template let-element key="statusId" appTable
+            ><app-register-status
+              [registerStatus]="element"
+            ></app-register-status
+          ></ng-template>
+
+          <ng-template let-element key="accion" appTable
+            ><button (click)="stopPropagation($event)" class="btn btn-light">
+              <ico-more class="ico-secondary"></ico-more></button
+          ></ng-template>
+        </app-table-body>
+      </div>
+    </div>
+  </section>
+</main>
+
+<p-confirmDialog
+  header="Confirmación"
+  id="save-confirm"
+  #cd
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '50vw' }"
+>
+  <ng-template pTemplate="footer">
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      label="No"
+      class="btn btn-primary p-button"
+      (click)="cd.reject()"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      class="btn btn-secondary p-button"
+      label="Si"
+      (click)="cd.accept()"
+    ></button>
+  </ng-template>
+</p-confirmDialog>
+
+<p-overlayPanel #filtersPanel>
+  <ng-template pTemplate>
+    <div>
+      <div class="filter" [ngClass]="{ calendar: calendar }">
+        <div>
+          <div class="filter-inner-container">
+            <div class="filter-menu">
+              <ul class="nav nav-pills filter-header border-right" id="filter">
+                <li
+                  class="nav-item"
+                  *ngFor="let menu of listaFiltro; let i = index"
+                >
+                  <button
+                    class="nav-link"
+                    [id]="menu.tipo"
+                    [ngClass]="{
+                      active: menu.tipo == 'ordenTrabajo'
+                    }"
+                    (click)="showMenu(menu.tipo)"
+                    [disabled]="false"
+                  >
+                    {{ menu.name }}
+                    <ico-arrow-right class="ico-secondary"></ico-arrow-right>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div class="filter-body px-2 py-4">
+              <div class="p-0">
+                <div>
+                  <div class="accordion">
+                    <div class="card border-0">
+                      <div
+                        class="collapse"
+                        [ngClass]="{ show: i == 0 }"
+                        *ngFor="let menu of listaFiltro; let i = index"
+                        [id]="'collapse-' + menu.tipo"
+                      >
+                        <div class="card-body">
+                          <ng-container [ngSwitch]="menu.tipo">
+                            <div *ngSwitchCase="listaFiltro[0].tipo">
+                              <app-input-filter
+                                type="number"
+                                regex="^[\d]*$"
+                                [(inputFilter)]="otCodeFilter"
+                              ></app-input-filter>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 text-right mt-2 mb-4">
+            <button
+              (click)="filtersPanel.hide()"
+              class="btn btn-outline-primary btn-md mr-3"
+              style="margin-right: 1rem !important"
+              pButton
+              label="Cerrar"
+            ></button>
+            <button
+              class="btn btn-secondary btn-md"
+              pButton
+              label="Aplicar"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-overlayPanel>
