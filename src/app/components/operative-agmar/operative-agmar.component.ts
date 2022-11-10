@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FILTERS_OT_LIST, OT_HEADER_LIST } from '@models/constants';
+import {
+  FILTERS_OT_LIST,
+  OT_ASSIGNMENT_STATES,
+  OT_HEADER_LIST,
+} from '@models/constants';
+import { ICheckboxFiler } from '@models/interfaces/ICheckboxFiler';
+import { IMaster } from '@models/interfaces/IMaster';
 import { IPlannedWorkOrder } from '@models/interfaces/IPlannedWorkOrder';
 import { OperativePlanService } from '@services/operative-plan.service';
 import { showMenu as ShowMenuFunction } from '@shared/functions';
@@ -17,6 +23,8 @@ export class OperativeAgmarComponent implements OnInit {
   loadingTableData = false;
   calendar = false;
   listaFiltro = FILTERS_OT_LIST;
+  otStates = OT_ASSIGNMENT_STATES;
+
   generatedWorkOrders: IMetric = { name: 'OTs Generadas', value: 10 };
   assignedWorkOrders: IMetric = { name: 'OTs Asignadas', value: 10 };
   pendingWorkOrders: IMetric = { name: 'OTs Pendientes', value: 10 };
@@ -32,6 +40,15 @@ export class OperativeAgmarComponent implements OnInit {
 
   // * Filter zone
   otCodeFilter = { value: '', disabled: false };
+  serviceFilter: IMaster & { disabled: false };
+  landfallFilter: IMaster & { disabled: false };
+  fromDateEtaFilter: string;
+  toDateEtaFilter: string;
+  fromDateScheduledFilter: string;
+  toDateScheduledFilter: string;
+  groupFilter: IMaster & { disabled: false };
+  userFilter: IMaster & { disabled: false };
+  statesFilters: ICheckboxFiler[] = [];
   // *
 
   constructor(
@@ -52,6 +69,10 @@ export class OperativeAgmarComponent implements OnInit {
     for (const ot of this.operativePlanService.getPlannedOtList()) {
       this.plannedOtList.push({ ...ot, spe: false });
     }
+
+    this.statesFilters = this.otStates.map((state) => {
+      return { ...state, active: true };
+    });
   }
 
   ngOnInit(): void {}

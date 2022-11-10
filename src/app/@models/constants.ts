@@ -1,7 +1,14 @@
 import { ITableHeader } from './interfaces/ITableHeader';
 
 export const FILTERS_OT_LIST = [
-  { tipo: 'ordenTrabajo', name: 'Orden de trabajo' },
+  { tipo: 'workOrder', name: 'Orden de trabajo' },
+  { tipo: 'service', name: 'Servicio' },
+  { tipo: 'landfall', name: 'Recalada' },
+  { tipo: 'eta', name: 'ETA' },
+  { tipo: 'scheduledTime', name: 'Fecha de programación' },
+  { tipo: 'group', name: 'Grupo' },
+  { tipo: 'user', name: 'Usuario' },
+  { tipo: 'registerState', name: 'Estado' },
 ];
 
 export const ES_CALENDAR = {
@@ -65,6 +72,34 @@ export const REFRESH_TOKEN = 'refreshToken';
 export const USER = 'username';
 
 export const NO_TOKEN_MESSAGE = 'A token was not send';
+
+export const OT_ASSIGNMENT_STATES = [
+  {
+    name: 'Por asignar',
+    value: 77,
+    color: '#109cf1',
+  },
+  {
+    name: 'Asignado',
+    value: 74,
+    color: '#f2bc00',
+  },
+  {
+    name: 'Asignación aceptada',
+    value: 80,
+    color: '#f2bc00',
+  },
+  {
+    name: 'Asignación observada',
+    value: 76,
+    color: '#f2bc00',
+  },
+  {
+    name: 'Planificado',
+    value: 78,
+    color: '#f2bc00',
+  },
+];
 
 export const OT_STATES = [
   {

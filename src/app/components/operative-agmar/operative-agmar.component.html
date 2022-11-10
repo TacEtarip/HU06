@@ -197,7 +197,7 @@
                     class="nav-link"
                     [id]="menu.tipo"
                     [ngClass]="{
-                      active: menu.tipo == 'ordenTrabajo'
+                      active: menu.tipo == 'workOrder'
                     }"
                     (click)="showMenu(menu.tipo)"
                     [disabled]="false"
@@ -228,6 +228,63 @@
                                 regex="^[\d]*$"
                                 [(inputFilter)]="otCodeFilter"
                               ></app-input-filter>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[1].tipo">
+                              <app-auto-complete-filter
+                                regex="^[A-Za-z0-9.\-_ ]+$"
+                                objectField="value"
+                                objectIdentifierKey="id"
+                                placeHolder="Ingresa nombre de servicio"
+                                errorMessage="Solo se permiten valores alfanuméricos"
+                                [(value)]="serviceFilter"
+                              ></app-auto-complete-filter>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[2].tipo">
+                              <app-auto-complete-filter
+                                regex="^[A-Za-z0-9.\-_ ]+$"
+                                objectField="value"
+                                objectIdentifierKey="id"
+                                placeHolder="Ingresa nombre de recalada"
+                                errorMessage="Solo se permiten valores alfanuméricos"
+                                [(value)]="landfallFilter"
+                              ></app-auto-complete-filter>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[3].tipo">
+                              <app-date-range-picker
+                                [(fromDate)]="fromDateEtaFilter"
+                                [(toDate)]="toDateEtaFilter"
+                              ></app-date-range-picker>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[4].tipo">
+                              <app-date-range-picker
+                                [(fromDate)]="fromDateScheduledFilter"
+                                [(toDate)]="toDateScheduledFilter"
+                              ></app-date-range-picker>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[5].tipo">
+                              <app-auto-complete-filter
+                                regex="^[A-Za-z.\-_ ]+$"
+                                objectField="value"
+                                objectIdentifierKey="id"
+                                placeHolder="Ingresa nombre de grupo"
+                                errorMessage="Solo se permiten letras"
+                                [(value)]="groupFilter"
+                              ></app-auto-complete-filter>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[6].tipo">
+                              <app-auto-complete-filter
+                                regex="^[A-Za-z.\-_ ]+$"
+                                objectField="value"
+                                objectIdentifierKey="id"
+                                placeHolder="Ingresa nombre de usuario"
+                                errorMessage="Solo se permiten letras"
+                                [(value)]="userFilter"
+                              ></app-auto-complete-filter>
+                            </div>
+                            <div *ngSwitchCase="listaFiltro[7].tipo">
+                              <app-check-filter
+                                [(filters)]="statesFilters"
+                              ></app-check-filter>
                             </div>
                           </ng-container>
                         </div>
