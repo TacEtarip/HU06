@@ -37,19 +37,25 @@
       <p-inputSwitch></p-inputSwitch>
       <h6>Por Asignar</h6>
     </div>
+    <div
+      #filterOL
+      class="filter-overlay"
+      [ngStyle]="{ position: 'relative' }"
+    ></div>
     <button
+      #filter
       id="btn-filtrar-otp"
       class="btn btn-primary p-button w-14rem"
       pButton
-      (click)="filtersPanel.toggle($event)"
+      (click)="openFilters(filtersPanel, $event)"
       label="Filtrar"
     >
       <ico-option class="ico-white h-auto w-auto mr-2"></ico-option>
     </button>
   </section>
   <section class="plan-table">
-    <div [ngStyle]="{ 'max-height': '480px' }" class="overflow-auto">
-      <div [ngStyle]="{ 'min-width': '1200px' }">
+    <div class="overflow-auto tpp-table">
+      <div class="tpp-table-container">
         <app-table-header [header]="otHeaders">
           <ng-template let-row key="spe" appTable>
             <div class="flex">
@@ -90,6 +96,8 @@
           </ng-template>
         </app-table-header>
         <app-table-body
+          [showCaseProperty]="'numberOt'"
+          [actionProperty]="'accion'"
           [loading]="loadingTableData"
           [list]="plannedOtList"
           [header]="otHeaders"
@@ -181,120 +189,19 @@
   </ng-template>
 </p-confirmDialog>
 
-<p-overlayPanel #filtersPanel>
+<p-overlayPanel
+  [appendTo]="isWidthLessThanOneThousand ? 'body' : filterOL"
+  (onHide)="currentMenuOnDisplay = 'landfall'"
+  #filtersPanel
+  [styleClass]="getStyleClassFilter()"
+>
   <ng-template pTemplate>
     <div>
       <div class="filter" [ngClass]="{ calendar: calendar }">
         <div>
-          <div class="filter-inner-container">
-            <div class="filter-menu">
-              <ul class="nav nav-pills filter-header border-right" id="filter">
-                <li
-                  class="nav-item"
-                  *ngFor="let menu of listaFiltro; let i = index"
-                >
-                  <button
-                    class="nav-link"
-                    [id]="menu.tipo"
-                    [ngClass]="{
-                      active: menu.tipo == 'workOrder'
-                    }"
-                    (click)="showMenu(menu.tipo)"
-                    [disabled]="false"
-                  >
-                    {{ menu.name }}
-                    <ico-arrow-right class="ico-secondary"></ico-arrow-right>
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            <div class="filter-body px-2 py-4">
-              <div class="p-0">
-                <div>
-                  <div class="accordion">
-                    <div class="card border-0">
-                      <div
-                        class="collapse"
-                        [ngClass]="{ show: i == 0 }"
-                        *ngFor="let menu of listaFiltro; let i = index"
-                        [id]="'collapse-' + menu.tipo"
-                      >
-                        <div class="card-body">
-                          <ng-container [ngSwitch]="menu.tipo">
-                            <div *ngSwitchCase="listaFiltro[0].tipo">
-                              <app-input-filter
-                                type="number"
-                                regex="^[\d]*$"
-                                [(inputFilter)]="otCodeFilter"
-                              ></app-input-filter>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[1].tipo">
-                              <app-auto-complete-filter
-                                regex="^[A-Za-z0-9.\-_ ]+$"
-                                objectField="value"
-                                objectIdentifierKey="id"
-                                placeHolder="Ingresa nombre de servicio"
-                                errorMessage="Solo se permiten valores alfanuméricos"
-                                [(value)]="serviceFilter"
-                              ></app-auto-complete-filter>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[2].tipo">
-                              <app-auto-complete-filter
-                                regex="^[A-Za-z0-9.\-_ ]+$"
-                                objectField="value"
-                                objectIdentifierKey="id"
-                                placeHolder="Ingresa nombre de recalada"
-                                errorMessage="Solo se permiten valores alfanuméricos"
-                                [(value)]="landfallFilter"
-                              ></app-auto-complete-filter>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[3].tipo">
-                              <app-date-range-picker
-                                [(fromDate)]="fromDateEtaFilter"
-                                [(toDate)]="toDateEtaFilter"
-                              ></app-date-range-picker>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[4].tipo">
-                              <app-date-range-picker
-                                [(fromDate)]="fromDateScheduledFilter"
-                                [(toDate)]="toDateScheduledFilter"
-                              ></app-date-range-picker>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[5].tipo">
-                              <app-auto-complete-filter
-                                regex="^[A-Za-z.\-_ ]+$"
-                                objectField="value"
-                                objectIdentifierKey="id"
-                                placeHolder="Ingresa nombre de grupo"
-                                errorMessage="Solo se permiten letras"
-                                [(value)]="groupFilter"
-                              ></app-auto-complete-filter>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[6].tipo">
-                              <app-auto-complete-filter
-                                regex="^[A-Za-z.\-_ ]+$"
-                                objectField="value"
-                                objectIdentifierKey="id"
-                                placeHolder="Ingresa nombre de usuario"
-                                errorMessage="Solo se permiten letras"
-                                [(value)]="userFilter"
-                              ></app-auto-complete-filter>
-                            </div>
-                            <div *ngSwitchCase="listaFiltro[7].tipo">
-                              <app-check-filter
-                                [(filters)]="statesFilters"
-                              ></app-check-filter>
-                            </div>
-                          </ng-container>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-filters
+            (currentMenuOnDisplay)="currentMenuOnDisplay = $event"
+          ></app-filters>
           <div class="col-lg-12 text-right mt-2 mb-4">
             <button
               (click)="filtersPanel.hide()"
@@ -314,3 +221,26 @@
     </div>
   </ng-template>
 </p-overlayPanel>
+
+<p-dialog
+  id="filter-dialog"
+  header="Filters"
+  [(visible)]="displayFiltersModal"
+  [modal]="true"
+  [style]="{ margin: 0 }"
+  [draggable]="false"
+  [resizable]="false"
+  position="top"
+>
+  <app-filters></app-filters>
+  <ng-template pTemplate="footer">
+    <button
+      (click)="displayFiltersModal = false"
+      class="btn btn-outline-primary btn-md mr-3"
+      style="margin-right: 1rem !important"
+      pButton
+      label="Cerrar"
+    ></button>
+    <button class="btn btn-secondary btn-md" pButton label="Aplicar"></button>
+  </ng-template>
+</p-dialog>

@@ -10,6 +10,7 @@ import { IPlannedWorkOrder } from '@models/interfaces/IPlannedWorkOrder';
 import { OperativePlanService } from '@services/operative-plan.service';
 import { showMenu as ShowMenuFunction } from '@shared/functions';
 import { ConfirmationService } from 'primeng/api';
+import { OverlayPanel } from 'primeng/overlaypanel';
 import { IMetric } from './../../@models/interfaces/IMetric';
 
 @Component({
@@ -24,10 +25,13 @@ export class OperativeAgmarComponent implements OnInit {
   calendar = false;
   listaFiltro = FILTERS_OT_LIST;
   otStates = OT_ASSIGNMENT_STATES;
+  currentMenuOnDisplay = '';
+  displayFiltersModal = false;
 
   generatedWorkOrders: IMetric = { name: 'OTs Generadas', value: 10 };
   assignedWorkOrders: IMetric = { name: 'OTs Asignadas', value: 10 };
   pendingWorkOrders: IMetric = { name: 'OTs Pendientes', value: 10 };
+  isWidthLessThanOneThousand = false;
 
   showMenu = ShowMenuFunction;
 
@@ -77,6 +81,15 @@ export class OperativeAgmarComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  openFilters(filterOverlayPanel: OverlayPanel, event: any) {
+    if (window.innerWidth < 780) {
+      this.displayFiltersModal = true;
+      return;
+    }
+    this.isWidthLessThanOneThousand = window.innerWidth <= 1000;
+    filterOverlayPanel.toggle(event);
+  }
+
   save() {
     this.confirmationService.confirm({
       message: 'Esta seguro que desea guardar la asignación?',
@@ -94,5 +107,18 @@ export class OperativeAgmarComponent implements OnInit {
     for (const ot of this.plannedOtList) {
       ot.spe = selectedState;
     }
+  }
+
+  getStyleClassFilter() {
+    if (this.isWidthLessThanOneThousand) {
+      return 'default-filter-overlay';
+    }
+    if (
+      this.currentMenuOnDisplay === 'eta' ||
+      this.currentMenuOnDisplay === 'scheduledTime'
+    ) {
+      return 'calendar-filter';
+    }
+    return 'regular-filter';
   }
 }

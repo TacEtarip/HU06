@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MONTHS_RANGE } from '@models/constants';
 import { dateISOToStringDDMMYYYY } from '../functions';
 
@@ -17,8 +24,20 @@ export class DateRangePickerComponent implements OnInit {
   minDateTo: Date | null = null;
 
   maxDateTo: Date | null = null;
+  getScreenWidth: number;
+
+  mobile = false;
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.mobile = this.getScreenWidth < 780;
+  }
 
   ngOnInit(): void {
+    this.getScreenWidth = window.innerWidth;
+    this.mobile = this.getScreenWidth < 780;
+
     if (this.fromDate === undefined) {
       return;
     }

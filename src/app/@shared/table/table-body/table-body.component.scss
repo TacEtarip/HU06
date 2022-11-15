@@ -1,3 +1,5 @@
+@import '../../../../scss/01-elements/variables';
+
 .table-body {
   display: grid;
   width: 100%;
@@ -11,4 +13,62 @@
   &:hover {
     filter: brightness(0.95);
   }
+}
+
+.mobile-table-header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  border-radius: 8px;
+  padding: 6px 6px 6px 9px;
+  z-index: 1;
+  position: relative;
+  .separator {
+    flex: 1 1 auto;
+  }
+  h4 {
+    font-size: 15px;
+    border-left: solid 3px $lightblue;
+    padding-left: 6px;
+  }
+
+  .expand-btn {
+    display: flex;
+    padding: 3px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgb(61 61 61 / 24%);
+  }
+}
+
+.mobile-table-content {
+  z-index: 10;
+  padding: 18px 36px;
+  display: grid;
+  gap: 6px;
+  background-color: white;
+  border-top: solid 1px $gray-3;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.mobile-table-property {
+  display: flex;
+  gap: 6px;
+  h6:first-child {
+    font-weight: bold;
+    color: $bluegray;
+  }
+  h6 {
+    margin: 0;
+  }
+}
+
+.mobile-table {
+  overflow: hidden;
+}
+
+.table-indicator {
+  width: 10px;
+  height: 100%;
 }

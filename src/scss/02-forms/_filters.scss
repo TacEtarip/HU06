@@ -6,11 +6,21 @@
   grid-template-columns: 200px minmax(300px, auto);
 }
 
-@media only screen and (max-width: 479px) {
+@media (max-width: '600px') {
   .filter {
     top: 70%;
     right: 1%;
     max-width: 380px;
+    ul {
+      padding: 0;
+    }
+    .border-right {
+      border-right: 0 !important;
+    }
+  }
+  .filter-inner-container {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 

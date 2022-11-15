@@ -18,6 +18,7 @@ import { ExampleComponent } from './components/example/example.component';
 import { MainViewComponent } from './components/main-view/main-view.component';
 import { OperativeAgmarComponent } from './components/operative-agmar/operative-agmar.component';
 import { PrimeModule } from './prime.module';
+import { FiltersComponent } from './components/filters/filters.component';
 
 registerLocaleData(localeEs);
 
@@ -27,6 +28,7 @@ registerLocaleData(localeEs);
     ExampleComponent,
     MainViewComponent,
     OperativeAgmarComponent,
+    FiltersComponent,
   ],
   imports: [
     BrowserModule,

@@ -216,10 +216,6 @@ button {
 
 .border-right {
   border-right: 1px solid $gray-2 !important;
-
-  @include mq('phone-wide', max) {
-    border-right: 0 !important;
-  }
 }
 
 .input-fill {
@@ -268,75 +264,6 @@ button {
     border-color: $secondary-color;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgb(255 106 53 / 39%);
-  }
-}
-
-.calendar {
-  .p-datepicker table td > span.p-highlight {
-    color: #ffffff;
-    background: $secondary-color;
-  }
-
-  &.p-calendar {
-    width: 360px;
-    max-width: none;
-
-    input {
-      border-radius: 7px;
-      border: 0.5px solid #c2cfe0 !important;
-      width: 100%;
-    }
-  }
-
-  .p-datepicker {
-    border: none !important;
-
-    table {
-      td {
-        & > a {
-          width: 30px;
-          height: 30px;
-        }
-      }
-    }
-  }
-
-  .panel {
-    right: 0 !important;
-    left: initial !important;
-  }
-
-  .p-datepicker table td.p-datepicker-today > span.p-highlight {
-    color: #ffffff;
-    background-color: $secondary-color !important;
-  }
-
-  .p-datepicker-current-day {
-    & > .p-state-active {
-      background-color: $secondary-color !important;
-      color: $white !important;
-      border-radius: 100%;
-    }
-  }
-
-  .p-datepicker-today {
-    & > a {
-      background-color: transparent !important;
-      border-radius: 100%;
-    }
-  }
-
-  .p-datepicker-title {
-    color: $secondary-color !important;
-    font-weight: 600;
-    font-size: 14px !important;
-    line-height: 21px !important;
-    letter-spacing: 0.01em;
-  }
-
-  .p-datepicker-next-icon,
-  .p-datepicker-prev-icon {
-    color: $secondary-color;
   }
 }
 

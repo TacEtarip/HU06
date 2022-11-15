@@ -4,6 +4,22 @@
   border: none;
 }
 
+.tpp-table {
+  max-height: 55vh;
+  .tpp-table-container {
+    min-width: 1400px;
+  }
+}
+
+@media (max-width: '780px') {
+  .tpp-table {
+    max-height: inherit;
+    .tpp-table-container {
+      min-width: inherit;
+    }
+  }
+}
+
 .tpp-input {
   background: #ffffff;
   border: 0.5px solid $gray-2;
@@ -35,4 +51,137 @@
       border-color: $danger;
     }
   }
+}
+
+.tpp-menu-btn {
+  &:hover {
+    background-color: $background;
+  }
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  align-items: center;
+  border: solid 2px $background;
+  background-color: $white;
+  cursor: pointer;
+  h6 {
+    font-size: 9px;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.calendar {
+  .p-datepicker table td > span.p-highlight {
+    color: #ffffff;
+    background: $secondary-color;
+  }
+
+  &.p-calendar {
+    width: 360px;
+    max-width: none;
+
+    input {
+      border-radius: 7px;
+      border: 0.5px solid #c2cfe0 !important;
+      width: 100%;
+    }
+  }
+
+  .p-datepicker {
+    border: none !important;
+    table {
+      td {
+        & > a {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .panel {
+    right: 0 !important;
+    left: initial !important;
+  }
+
+  .p-datepicker table td.p-datepicker-today > span.p-highlight {
+    color: #ffffff;
+    background-color: $secondary-color !important;
+  }
+
+  .p-datepicker-current-day {
+    & > .p-state-active {
+      background-color: $secondary-color !important;
+      color: $white !important;
+      border-radius: 100%;
+    }
+  }
+
+  .p-datepicker-today {
+    & > a {
+      background-color: transparent !important;
+      border-radius: 100%;
+    }
+  }
+
+  .p-datepicker-title {
+    color: $secondary-color !important;
+    font-weight: 600;
+    font-size: 14px !important;
+    line-height: 21px !important;
+    letter-spacing: 0.01em;
+  }
+
+  .p-datepicker-next-icon,
+  .p-datepicker-prev-icon {
+    color: $secondary-color;
+  }
+}
+
+@media (max-width: '780px') {
+  .filter-overlay {
+    display: none;
+  }
+  .calendar {
+    &.p-calendar {
+      width: 100%;
+    }
+  }
+}
+
+.p-overlaypanel {
+  max-width: 90vw;
+}
+
+.calendar-filter {
+  &.p-overlaypanel {
+    left: -769px !important;
+    width: 970px !important;
+    top: 35px !important;
+    --overlayArrowLeft: 786px !important;
+  }
+}
+
+.regular-filter {
+  &.p-overlaypanel {
+    left: -327px !important;
+    top: 35px !important;
+  }
+}
+
+#filter-dialog {
+  .p-dialog {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .p-dialog .p-dialog-content {
+    height: 100% !important;
+  }
+}
+
+.p-datepicker-mask {
+  display: none;
 }

@@ -1,51 +1,145 @@
 <div>
   <div>
-    <div
-      (click)="emitRowClick(row)"
-      *ngFor="let row of list; let y = index"
-      class="card pr-1 pl-1 br-15 mb-3 shadow-1"
-      [ngClass]="{ 'table-row': rowsClickable }"
-      [ngStyle]="{
-        position: 'initial',
-        background: y % 2 === 0 ? 'white' : '#EBEEF3'
-      }"
-    >
-      <div class="card-body">
-        <div
-          [ngStyle]="{
-            'grid-template-columns': gridTemplateColumns,
-            'min-height': '35px'
-          }"
-          class="table-body lista"
-        >
-          <ng-container *ngFor="let col of header; let i = index">
-            <div
-              [ngStyle]="{
-                height: '100%',
-                display: 'flex',
-                'align-items': 'center'
-              }"
-              [ngClass]="{
-                'border-right': header.length !== i + 1
-              }"
+    <ng-container *ngIf="getScreenWidth < 780">
+      <ng-container *ngFor="let row of list; let y = index">
+        <div class="mobile-table mb-3">
+          <div
+            [@tableHeaderExpand]="row.active ? 'open' : 'closed'"
+            [ngStyle]="{
+              background: y % 2 === 0 ? 'white' : '#EBEEF3'
+            }"
+            class="mobile-table-header"
+          >
+            <h4
+              *ngIf="
+                getContent(
+                  showCaseProperty || header[0].property
+                ) as showCaseContent
+              "
             >
-              <div
-                [ngStyle]="{ width: '100%' }"
-                *ngIf="getContent(col.property) as content"
+              <ng-container
+                *ngTemplateOutlet="
+                  showCaseContent.templateRef;
+                  context: {
+                    $implicit: row[showCaseContent.key],
+                    index: y,
+                    row: row
+                  }
+                "
               >
+              </ng-container>
+            </h4>
+            <span class="separator"></span>
+            <ng-container *ngIf="actionProperty">
+              <div *ngIf="getContent(actionProperty) as actionContent">
                 <ng-container
                   *ngTemplateOutlet="
-                    content.templateRef;
-                    context: { $implicit: row[content.key], index: y, row: row }
+                    actionContent.templateRef;
+                    context: {
+                      $implicit: row[actionContent.key],
+                      index: y,
+                      row: row
+                    }
                   "
                 >
                 </ng-container>
               </div>
+            </ng-container>
+            <div
+              [@rotateExpandBtn]="row.active ? 'rotated' : 'default'"
+              (click)="row.active = !row.active"
+              class="expand-btn"
+            >
+              <em
+                class="pi pi-angle-left"
+                style="font-size: 2rem"
+                [ngStyle]="{ color: row.active ? '#ff6a35' : '#5a6770' }"
+              ></em>
             </div>
-          </ng-container>
+          </div>
+          <div
+            [@inOutAnimation]
+            *ngIf="row.active"
+            class="mobile-table-content"
+          >
+            <div *ngFor="let col of mobileHeaders; let i = index">
+              <div
+                *ngIf="getContent(col.property) as content"
+                class="mobile-table-property"
+              >
+                <h6>{{ col.name }}:</h6>
+                <h6>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      content.templateRef;
+                      context: {
+                        $implicit: row[content.key],
+                        index: y,
+                        row: row
+                      }
+                    "
+                  >
+                  </ng-container>
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="getScreenWidth > 780">
+      <div
+        (click)="emitRowClick(row)"
+        *ngFor="let row of list; let y = index"
+        class="card pr-1 pl-1 br-15 mb-3 shadow-1"
+        [ngClass]="{ 'table-row': rowsClickable }"
+        [ngStyle]="{
+          position: 'initial',
+          background: y % 2 === 0 ? 'white' : '#EBEEF3'
+        }"
+      >
+        <div class="card-body">
+          <div
+            [ngStyle]="{
+              'grid-template-columns': gridTemplateColumns,
+              'min-height': '35px'
+            }"
+            class="table-body lista"
+          >
+            <ng-container *ngFor="let col of header; let i = index">
+              <div
+                [ngStyle]="{
+                  height: '100%',
+                  display: 'flex',
+                  'align-items': 'center'
+                }"
+                [ngClass]="{
+                  'border-right': header.length !== i + 1
+                }"
+              >
+                <div
+                  [ngStyle]="{ width: '100%' }"
+                  *ngIf="getContent(col.property) as content"
+                >
+                  <ng-container
+                    *ngTemplateOutlet="
+                      content.templateRef;
+                      context: {
+                        $implicit: row[content.key],
+                        index: y,
+                        row: row
+                      }
+                    "
+                  >
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
 
     <app-loading-table *ngIf="loading"></app-loading-table>
   </div>
