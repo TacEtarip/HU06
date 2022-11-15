@@ -130,9 +130,21 @@
             >{{ row.landfall }} {{ row.eta | date: 'short' }}
           </ng-template>
 
-          <ng-template let-element key="scheduledDate" appTable>{{
-            element | date: 'shortDate'
-          }}</ng-template>
+          <ng-template
+            let-element
+            let-index="index"
+            key="scheduledDate"
+            appTable
+          >
+            <div>
+              <p-calendar
+                [disabled]="true"
+                panelStyleClass="calendar-panel"
+                [(ngModel)]="plannedOtList[index].scheduledDate"
+                dateFormat="dd/mm/yy"
+              ></p-calendar>
+            </div>
+          </ng-template>
 
           <ng-template let-element key="groupId" appTable>
             <select disabled [value]="1" name="example" tppInput type="text">

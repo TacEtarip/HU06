@@ -4,7 +4,7 @@ export interface IPlannedWorkOrder {
   locality: string;
   landfall: string;
   eta: string;
-  scheduledDate: string;
+  scheduledDate: string | Date;
   groupId: number;
   userId: number;
   statusId: number;

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FILTERS_OT_LIST,
@@ -17,9 +18,39 @@ import { IMetric } from './../../@models/interfaces/IMetric';
   selector: 'app-operative-agmar',
   templateUrl: './operative-agmar.component.html',
   styleUrls: ['./operative-agmar.component.scss'],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, DatePipe],
 })
 export class OperativeAgmarComponent implements OnInit {
+  // *
+
+  constructor(
+    private datePipe: DatePipe,
+    private operativePlanService: OperativePlanService,
+    private confirmationService: ConfirmationService
+  ) {
+    const todayToSevenDaysAgo = new Date();
+    todayToSevenDaysAgo.setDate(todayToSevenDaysAgo.getDate() - 7);
+
+    const todayThirtyDaysFromToday = new Date();
+    todayThirtyDaysFromToday.setDate(todayThirtyDaysFromToday.getDate() + 30);
+
+    this.metricDateRange = {
+      fromDate: todayToSevenDaysAgo.toISOString(),
+      toDate: todayThirtyDaysFromToday.toISOString(),
+    };
+
+    for (const ot of this.operativePlanService.getPlannedOtList()) {
+      this.plannedOtList.push({
+        ...ot,
+        scheduledDate: new Date(ot.scheduledDate),
+        spe: false,
+      });
+    }
+
+    this.statesFilters = this.otStates.map((state) => {
+      return { ...state, active: true };
+    });
+  }
   otHeaders = OT_HEADER_LIST;
   loadingTableData = false;
   calendar = false;
@@ -53,30 +84,9 @@ export class OperativeAgmarComponent implements OnInit {
   groupFilter: IMaster & { disabled: false };
   userFilter: IMaster & { disabled: false };
   statesFilters: ICheckboxFiler[] = [];
-  // *
 
-  constructor(
-    private operativePlanService: OperativePlanService,
-    private confirmationService: ConfirmationService
-  ) {
-    const todayToSevenDaysAgo = new Date();
-    todayToSevenDaysAgo.setDate(todayToSevenDaysAgo.getDate() - 7);
-
-    const todayThirtyDaysFromToday = new Date();
-    todayThirtyDaysFromToday.setDate(todayThirtyDaysFromToday.getDate() + 30);
-
-    this.metricDateRange = {
-      fromDate: todayToSevenDaysAgo.toISOString(),
-      toDate: todayThirtyDaysFromToday.toISOString(),
-    };
-
-    for (const ot of this.operativePlanService.getPlannedOtList()) {
-      this.plannedOtList.push({ ...ot, spe: false });
-    }
-
-    this.statesFilters = this.otStates.map((state) => {
-      return { ...state, active: true };
-    });
+  transformToDate(stringDate: string) {
+    return new Date(stringDate);
   }
 
   ngOnInit(): void {}

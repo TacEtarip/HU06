@@ -22,10 +22,12 @@ export class MainViewComponent implements OnInit {
   ngOnInit(): void {
     this.blockUI.start('Espere...');
 
-    const rawToken = this.activatedRoute.snapshot.paramMap.get('token');
-    const refreshToken =
-      this.activatedRoute.snapshot.paramMap.get('refreshToken');
-    const userId = this.activatedRoute.snapshot.paramMap.get('userId');
+    const childrenSnapShotParamMap =
+      this.activatedRoute.firstChild.snapshot.paramMap;
+
+    const rawToken = childrenSnapShotParamMap.get('token');
+    const refreshToken = childrenSnapShotParamMap.get('refreshToken');
+    const userId = childrenSnapShotParamMap.get('userId');
 
     this.blockUI.stop();
 
@@ -33,6 +35,7 @@ export class MainViewComponent implements OnInit {
       this.userDataService.setToken(rawToken);
       this.userDataService.setUser(userId);
       this.userDataService.setRefreshToken(refreshToken);
+      return;
     }
 
     this.notificationService.warn(NO_TOKEN_MESSAGE);

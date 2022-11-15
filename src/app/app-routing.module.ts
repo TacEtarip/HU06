@@ -5,23 +5,27 @@ import { OperativeAgmarComponent } from './components/operative-agmar/operative-
 
 const routes: Routes = [
   {
-    path: 'plan',
+    path: 'ordenesServicio',
     component: MainViewComponent,
     children: [
       {
-        path: 'operative-agmar',
+        path: 'planoperagmar',
+        component: OperativeAgmarComponent,
+      },
+      {
+        path: 'planoperagmar/:token/:refreshToken/:userId',
         component: OperativeAgmarComponent,
       },
       {
         path: '',
-        redirectTo: 'operative-agmar',
+        redirectTo: 'planoperagmar',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: 'plan',
+    redirectTo: 'ordenesServicio',
     pathMatch: 'full',
   },
 ];
